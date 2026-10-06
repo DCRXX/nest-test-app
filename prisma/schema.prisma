@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "cockroachdb"
+}
+
+model profile {
+  id          String       @id @default(uuid())
+  name        String
+  description String
+  links       String[]
+  skills      skills[]
+  experience  experience[]
+  project     project[]
+}
+
+model skills {
+  id          String   @id @default(uuid())
+  profile     profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId   String?
+  name        String
+  skillsLevel level
+}
+
+enum level {
+  BASIC
+  MEDIUM
+  ADVANCED
+}
+
+model experience {
+  id                 String   @id @default(uuid())
+  company            String
+  position           String
+  periodOfEmployment String
+  profile            profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId          String
+  achievements       String
+}
+
+model project {
+  id        String   @id @default(uuid())
+  name      String
+  link      String[]
+  profile   profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+}

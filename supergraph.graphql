@@ -1,0 +1,249 @@
+schema
+    @link(url: "https://specs.apollo.dev/link/v1.0")
+    @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
+    
+    
+    
+    
+    
+    
+    
+  {
+    query: Query
+    mutation: Mutation
+    
+  }
+
+  
+    directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
+
+    directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+    
+      directive @join__field(
+        graph: join__Graph
+        requires: join__FieldSet
+        provides: join__FieldSet
+        type: String
+        external: Boolean
+        override: String
+        usedOverridden: Boolean
+        
+        
+      ) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+    
+    
+
+    directive @join__implements(
+      graph: join__Graph!
+      interface: String!
+    ) repeatable on OBJECT | INTERFACE
+
+    directive @join__type(
+      graph: join__Graph!
+      key: join__FieldSet
+      extension: Boolean! = false
+      resolvable: Boolean! = true
+      isInterfaceObject: Boolean! = false
+    ) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+    directive @join__unionMember(
+      graph: join__Graph!
+      member: String!
+    ) repeatable on UNION
+
+    scalar join__FieldSet
+    
+  
+  
+  directive @link(
+    url: String
+    as: String
+    for: link__Purpose
+    import: [link__Import]
+  ) repeatable on SCHEMA
+
+  scalar link__Import
+
+  enum link__Purpose {
+    """
+    `SECURITY` features provide metadata necessary to securely resolve fields.
+    """
+    SECURITY
+
+    """
+    `EXECUTION` features provide metadata necessary for operation execution.
+    """
+    EXECUTION
+  }
+
+  
+  
+  
+  
+  
+  
+  
+enum join__Graph {
+  MY_NEST_API @join__graph(name: "MyNestAPI", url: "http://localhost:3000/graphql") 
+}
+
+scalar TransportOptions @join__type(graph: MY_NEST_API) 
+
+type SkillsEntity @join__type(graph: MY_NEST_API)  {
+  id: ID!
+  name: String!
+  skillsLevel: SkillsLevel!
+  profileId: ID
+}
+
+type ExperienceEntity @join__type(graph: MY_NEST_API)  {
+  id: ID!
+  company: String!
+  position: String!
+  periodOfEmployment: String!
+  achievements: String!
+  profileId: ID
+}
+
+type ProjectEntity @join__type(graph: MY_NEST_API)  {
+  id: ID!
+  name: String!
+  link: [String!]!
+  profileId: ID
+}
+
+type profileEntity @join__type(graph: MY_NEST_API)  {
+  id: ID!
+  name: String!
+  description: String!
+  links: [String!]!
+  skills: [SkillsEntity!]
+  experience: [ExperienceEntity!]
+  project: [ProjectEntity!]
+}
+
+type Query @join__type(graph: MY_NEST_API)  {
+  getHello: String!
+  """
+  Получить все профили
+  """
+  profiles: [profileEntity!]!
+  """
+  Получить профиль по ID
+  """
+  profile(id: ID!) : profileEntity
+  """
+  Получить все навыки
+  """
+  getAllSkills: [SkillsEntity!]!
+  """
+  Получить навык по id
+  """
+  getIdskills(id: ID!) : SkillsEntity
+  """
+  Получить все записи опыта
+  """
+  getAllExperience: [ExperienceEntity!]!
+  """
+  Получить запись опыта по id
+  """
+  getIdExperience(id: ID!) : ExperienceEntity
+  """
+  Получить все профили
+  """
+  getAllProject: [ProjectEntity!]!
+  """
+  Получить профиль по id
+  """
+  getIdProject(id: ID!) : ProjectEntity
+}
+
+type Mutation @join__type(graph: MY_NEST_API)  {
+  """
+  Создать профиль
+  """
+  createProfile(createProfileInput: CreateProfileInput!) : profileEntity!
+  """
+  Удалить все профили
+  """
+  deleteAllProfile: Int!
+  """
+  Удалить профиль по id
+  """
+  deleteIdProfile(id: ID!) : profileEntity
+  """
+  Создать навык
+  """
+  createSkills(createskills: InputSkills!) : SkillsEntity!
+  """
+  Удалить все навыки
+  """
+  deleteAllSkills: Int!
+  """
+  Удалить навык по Id
+  """
+  deleteIdSkills(id: ID!) : SkillsEntity
+  """
+  Создать запись опыта
+  """
+  createExperience(createExperience: InputExperience!) : ExperienceEntity!
+  """
+  Удалить запись опыта по id
+  """
+  deleteIdExperience(id: ID!) : ExperienceEntity
+  """
+  Удалить все записи опыта
+  """
+  deleteAllExperience: Int!
+  """
+  Создать профиль
+  """
+  createProject(createProject: InputProject!) : ProjectEntity!
+  """
+  Удалить Профиль по id
+  """
+  deleteIdProject(id: ID!) : ProjectEntity
+  """
+  Удалить все профили
+  """
+  deleteAllProject: Int!
+}
+
+"""
+Уровень владение навыком
+"""
+enum SkillsLevel @join__type(graph: MY_NEST_API)  {
+  BASIC @join__enumValue(graph: MY_NEST_API) 
+  MEDIUM @join__enumValue(graph: MY_NEST_API) 
+  ADVANCED @join__enumValue(graph: MY_NEST_API) 
+}
+
+input CreateProfileInput @join__type(graph: MY_NEST_API)  {
+  name: String!
+  description: String!
+  links: [String!]!
+  skills: [InputSkills!]
+  experience: [InputExperience!]
+  project: [InputProject!]
+}
+
+input InputSkills @join__type(graph: MY_NEST_API)  {
+  name: String!
+  skillsLevel: SkillsLevel!
+  profileId: ID
+}
+
+input InputExperience @join__type(graph: MY_NEST_API)  {
+  company: String!
+  position: String!
+  periodOfEmployment: String!
+  achievements: String!
+  profileId: ID
+}
+
+input InputProject @join__type(graph: MY_NEST_API)  {
+  name: String!
+  link: [String!]!
+  profileId: ID
+}

@@ -1,0 +1,138 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SkillsEntity {
+  id: ID!
+  name: String!
+  skillsLevel: SkillsLevel!
+  profileId: ID
+}
+
+"""Уровень владение навыком"""
+enum SkillsLevel {
+  BASIC
+  MEDIUM
+  ADVANCED
+}
+
+type ExperienceEntity {
+  id: ID!
+  company: String!
+  position: String!
+  periodOfEmployment: String!
+  achievements: String!
+  profileId: ID
+}
+
+type ProjectEntity {
+  id: ID!
+  name: String!
+  link: [String!]!
+  profileId: ID
+}
+
+type profileEntity {
+  id: ID!
+  name: String!
+  description: String!
+  links: [String!]!
+  skills: [SkillsEntity!]
+  experience: [ExperienceEntity!]
+  project: [ProjectEntity!]
+}
+
+type Query {
+  getHello: String!
+
+  """Получить все профили"""
+  profiles: [profileEntity!]!
+
+  """Получить профиль по ID"""
+  profile(id: ID!): profileEntity
+
+  """Получить все навыки"""
+  getAllSkills: [SkillsEntity!]!
+
+  """Получить навык по id"""
+  getIdskills(id: ID!): SkillsEntity
+
+  """Получить все записи опыта"""
+  getAllExperience: [ExperienceEntity!]!
+
+  """Получить запись опыта по id"""
+  getIdExperience(id: ID!): ExperienceEntity
+
+  """Получить все профили"""
+  getAllProject: [ProjectEntity!]!
+
+  """Получить профиль по id"""
+  getIdProject(id: ID!): ProjectEntity
+}
+
+type Mutation {
+  """Создать профиль"""
+  createProfile(createProfileInput: CreateProfileInput!): profileEntity!
+
+  """Удалить все профили"""
+  deleteAllProfile: Int!
+
+  """Удалить профиль по id"""
+  deleteIdProfile(id: ID!): profileEntity
+
+  """Создать навык"""
+  createSkills(createskills: InputSkills!): SkillsEntity!
+
+  """Удалить все навыки"""
+  deleteAllSkills: Int!
+
+  """Удалить навык по Id"""
+  deleteIdSkills(id: ID!): SkillsEntity
+
+  """Создать запись опыта"""
+  createExperience(createExperience: InputExperience!): ExperienceEntity!
+
+  """Удалить запись опыта по id"""
+  deleteIdExperience(id: ID!): ExperienceEntity
+
+  """Удалить все записи опыта"""
+  deleteAllExperience: Int!
+
+  """Создать профиль"""
+  createProject(createProject: InputProject!): ProjectEntity!
+
+  """Удалить Профиль по id"""
+  deleteIdProject(id: ID!): ProjectEntity
+
+  """Удалить все профили"""
+  deleteAllProject: Int!
+}
+
+input CreateProfileInput {
+  name: String!
+  description: String!
+  links: [String!]!
+  skills: [InputSkills!]
+  experience: [InputExperience!]
+  project: [InputProject!]
+}
+
+input InputSkills {
+  name: String!
+  skillsLevel: SkillsLevel!
+  profileId: ID
+}
+
+input InputExperience {
+  company: String!
+  position: String!
+  periodOfEmployment: String!
+  achievements: String!
+  profileId: ID
+}
+
+input InputProject {
+  name: String!
+  link: [String!]!
+  profileId: ID
+}
