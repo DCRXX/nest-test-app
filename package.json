@@ -41,6 +41,7 @@
     "dotenv": "^18.0.4",
     "express-basic-auth": "^1.2.1",
     "graphql": "^16.14.2",
+    "http-proxy-middleware": "^4.2.0",
     "i": "^0.3.7",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"

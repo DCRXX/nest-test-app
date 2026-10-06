@@ -3,8 +3,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import basicAuth from 'express-basic-auth'
+import {createProxyMiddleware} from 'http-proxy-middleware'
 
-export const Domen = process.env.DOMEN
+export const Domain = process.env.DOMEN
 export const port = process.env.PORT || 3000
 export const isDev = process.env.NODE_ENV !== 'production'
 
@@ -26,17 +27,9 @@ async function bootstrap() {
     whitelist: true
   }))
 
-  // REST API
-  const APIAuth = basicAuth({
-    challenge: true,
-    users: {
-      [process.env.APIUSER!]: process.env.APIPASSWORD!
-    }
-  })
-
   await app.listen(port, '0.0.0.0');
 
-  logger.log(`Server Running! \n Domen: ${Domen} \n Adress: ${isDev ? `http://${Domen}:${port}` : `https://${Domen}`} \n PORT: ${port}`)
-  logger.log(`API Running on: \n GraphiQL: ${isDev ? `http://${Domen}:${port}/graphql` : 'Disable in production'} \n REST: ${isDev ? `http://${Domen}:4000/rest/docs` : `https://${Domen}/rest/docs`} \n       ${isDev ? `http://${Domen}:4000/graphql` : `https://${Domen}/graphql`}`)
+  logger.log(`Server Running! \n Domain: ${Domain} \n Adress: ${isDev ? `http://${Domain}:${port}` : `https://${Domain}`} \n PORT: ${port}`)
+  logger.log(`API Running on: \n GraphiQL: ${isDev ? `http://${Domain}:${port}/graphql` : 'Disable in production'} \n REST: ${isDev ? `http://${Domain}:4000/rest/docs` : `https://${Domain}/rest/docs`} \n       ${isDev ? `http://${Domain}:4000/graphql` : `https://${Domain}/graphql`}`)
 }
 bootstrap();
